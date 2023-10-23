@@ -14,9 +14,8 @@ class BukuController extends Controller
      */
     public function index()
     {
-        $data_buku = Buku::all()->sortByDesc('id');
-        $no = 0;
-        return view('buku.index', compact('data_buku', 'no'));
+       
+        return view('buku.index',['data_buku'=>Buku::paginate(5)] );
     }
 
     /**

@@ -46,4 +46,6 @@
             @endforeach
         </tbody>
     </table>
+
+    {{$data_buku->links() }}
 @endsection
