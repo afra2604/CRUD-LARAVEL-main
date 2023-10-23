@@ -3,16 +3,25 @@
 
 @section('content')
 <div class="container">
+
+                @if(count($errors) > 0)
+ 
+                    @foreach ($errors->all() as $error)
+                    <ul class="alert alert-danger list-group">
+                        <li class="list-group-item">{{ $error }}</li>
+                        </ul>
+                    @endforeach
+             
+                @endif
+
+           
+
     <div class="row justify-content-center">
         <div class="col-md-10">
+        <h4>Tambah Buku</h4>
             <div class="card card-shadow">
                 <div class="card-body">
-                @if(count($errors) > 0)
-                <ul class="alert alert-danger list-group">
-                    @foreach ($errors->all() as $error)
-                        <li class="list-group-item">{{ $error }}</li>
-                    @endforeach
-                    <h4>Tambah Buku</h4>
+             
                 
                     <form method="post" action="{{ route('buku.store') }}">
                         @csrf

@@ -3,18 +3,18 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card card-shadow">
-                <div class="card-body">
-                @if(count($errors) > 0)
+@if(count($errors) > 0)
                 <ul class="alert alert-danger">
                     @foreach ($errors->all() as $error)
                         <li style="margin-left: 10px">{{ $error }}</li>
                     @endforeach
                 </ul>
             @endif
-                    <h4>Edit Buku</h4>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+        <h4>Edit Buku</h4>
+            <div class="card card-shadow">
+                <div class="card-body">
 
                     <form method="post" action="{{ route('buku.update', ['id' => $buku->id]) }}">
                         @csrf
