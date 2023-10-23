@@ -7,7 +7,15 @@
         <div class="col-md-10">
             <div class="card card-shadow">
                 <div class="card-body">
+                @if(count($errors) > 0)
+                <ul class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <li style="margin-left: 10px">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
                     <h4>Edit Buku</h4>
+
                     <form method="post" action="{{ route('buku.update', ['id' => $buku->id]) }}">
                         @csrf
                         @method('PUT')

@@ -24,6 +24,7 @@ Route::middleware(['web'])->group(function () {
     Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
     
     Route::delete('/buku/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
+    Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
 });
 
 Route::get('/', function() { return view('welcome');});

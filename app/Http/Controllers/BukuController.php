@@ -37,6 +37,25 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
+        $customMessages = [
+            'judul.required' => 'Kolom judul wajib diisi.',
+            'judul.string' => 'Kolom judul harus berisi teks.',
+            'penulis.required' => 'Kolom penulis wajib diisi.',
+            'penulis.string' => 'Kolom penulis harus berisi teks.',
+            'penulis.max' => 'Kolom penulis maksimal 30 karakter.',
+            'harga.required' => 'Kolom harga wajib diisi.',
+            'harga.numeric' => 'Kolom harga harus berisi angka.',
+            'tgl_terbit.required' => 'Kolom tanggal terbit wajib diisi.',
+            'tgl_terbit.date' => 'Kolom tanggal terbit harus berisi tanggal yang valid.',
+        ];
+        
+        $this->validate($request, [
+            'judul' => 'required|string',
+            'penulis' => 'required|string|max:30',
+            'harga' => 'required|numeric',
+            'tgl_terbit' => 'required|date',
+        ], $customMessages);
+
         $buku = new Buku;
         $buku->judul = $request->input('judul');
         $buku->penulis = $request->input('penulis');
@@ -82,16 +101,35 @@ class BukuController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $customMessages = [
+            'judul.required' => 'Kolom judul wajib diisi.',
+            'judul.string' => 'Kolom judul harus berisi teks.',
+            'penulis.required' => 'Kolom penulis wajib diisi.',
+            'penulis.string' => 'Kolom penulis harus berisi teks.',
+            'penulis.max' => 'Kolom penulis maksimal 30 karakter.',
+            'harga.required' => 'Kolom harga wajib diisi.',
+            'harga.numeric' => 'Kolom harga harus berisi angka.',
+            'tgl_terbit.required' => 'Kolom tanggal terbit wajib diisi.',
+            'tgl_terbit.date' => 'Kolom tanggal terbit harus berisi tanggal yang valid.',
+        ];
+        
+        $this->validate($request, [
+            'judul' => 'required|string',
+            'penulis' => 'required|string|max:30',
+            'harga' => 'required|numeric',
+            'tgl_terbit' => 'required|date',
+        ], $customMessages);
+
         $buku = Buku::find($id);
         $buku->judul = $request->judul;
         $buku->penulis = $request->penulis;
         $buku->harga = $request->harga;
-    
+
         $tgl_terbit = \Carbon\Carbon::createFromFormat('Y-m-d', $request->tgl_terbit);
         $buku->tgl_terbit = $tgl_terbit->format('Y-m-d');
     
         $buku->save();
-        return redirect('/buku');
+        return redirect('/buku')->with('pesan', 'Data Buku Berhasil Disimpan');
     }
 
     /**
@@ -106,6 +144,17 @@ class BukuController extends Controller
         if ($buku) {
             $buku->delete();
         }
-        return redirect('/buku');
+        return redirect('/buku')->with('pesan', 'Data Buku Berhasil Dihapus');
+    }
+
+    // * FUNGSI SEARCH
+    public function search(Request $request){
+        $batas = 5;
+        $cari = $request->kata;
+        $data_buku = Buku::where('judul', 'like', "%".$cari."%")->orwhere('penulis', 'like', "%".$cari."%")
+            ->paginate($batas);
+        $jumlah_buku = Buku::count();
+        $no = 1 + ($batas * ($data_buku->currentPage() - 1));
+        return view('buku.search', compact('data_buku','no', 'jumlah_buku', 'cari'));
     }
 }

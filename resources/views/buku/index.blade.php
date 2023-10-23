@@ -3,11 +3,9 @@
 
 @section('content')
 
-@if (session('pesan'))
-    <div class="alert alert-pesan">
-        {{ session('pesan') }}
-    </div>
-@endif
+@if(Session::has('pesan'))
+            <div class="alert alert-success">{{Session::get('pesan')}}</div>
+        @endif
 
     <h1 class="text-center">Daftar Buku</h1>
     <br>
